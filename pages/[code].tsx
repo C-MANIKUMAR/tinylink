@@ -1,11 +1,14 @@
+
 import { GetServerSideProps } from "next";
-import { prisma } from "../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const code = context.params?.code as string | undefined;
   if (!code) {
     return { notFound: true };
   }
+
+  
+  const { prisma } = await import("../lib/prisma");
 
   const link = await prisma.link.findUnique({ where: { code } });
   if (!link) return { notFound: true };
